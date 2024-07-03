@@ -4,7 +4,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline"
 export default function AiCloningProgress(paramGeral: any) {
 
     return (
-        <div className={`${paramGeral.open ? 'opacity-100' : 'opacity-0 pointer-events-none'} w-viewport inset-0 h-screen fixed flex flex-col transition duration-300`}>
+        <div className={`${paramGeral.open ? 'opacity-100' : 'opacity-0 pointer-events-none'} w-viewport inset-0 h-screen fixed flex flex-col transition duration-300 z-10`}>
             <div className="fixed w-screen h-screen blur opacity-50 bg-neutral-300"></div>
             <div className="flex flex-col my-auto p-6 mx-auto items-center rounded-lg bg-white z-10 w-[600px]">
                 <div className="flex flex-col items-center p-12 gap-8">

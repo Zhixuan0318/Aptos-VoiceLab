@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function PopupConnectWallet(paramGeral: any) {
     return (
-        <div className={`${paramGeral.open?'flex':'hidden pointer-events-none'} h-screen w-screen fixed`}>
+        <div className={`${paramGeral.open?'flex':'hidden pointer-events-none'} h-screen w-screen fixed z-10`}>
             <button
                 className="fixed w-screen h-screen bg-[#cccccc8a]"
                 onClick={() => paramGeral.set(false)}

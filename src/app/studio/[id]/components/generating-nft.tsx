@@ -7,7 +7,7 @@ export default function GeneratingNft(paramGeral: any) {
 
 
     return (
-        <div className={`${paramGeral.open ? 'opacity-100' : 'opacity-0 pointer-events-none'} w-viewport inset-0 h-screen fixed flex flex-col transition duration-300`}>
+        <div className={`${paramGeral.open ? 'opacity-100' : 'opacity-0 pointer-events-none'} w-viewport inset-0 h-screen fixed flex flex-col transition duration-300 z-10`}>
             <button className={`${carregando?'pointer-events-none':''} fixed w-screen h-screen blur opacity-50 bg-neutral-300`} onClick={() => paramGeral.set(false)}></button>
 
 

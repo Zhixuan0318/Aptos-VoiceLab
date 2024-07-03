@@ -1,7 +1,5 @@
 "use client"
 import { useState } from "react";
-import GenerateCardConfirmation from "../components/generate-card-confirmation";
-import AiCloningProgress from "../components/ai-cloning-progress";
 import GeneratingNft from "../components/generating-nft";
 import { sampleData } from "@/app/data/sample-data";
 import CardMonetize from "../components/card-monetize";
@@ -10,16 +8,18 @@ import MonetizePopup from "../components/monetize-popup";
 
 
 export default function Monetize() {
-    const [openGenerateCardConfirmation, setOpenGenerateCardConfirmation] = useState(false)
-    const [openAiCloningProgress, setOpenAiCloningProgress] = useState(false)
     const [openGeneratingNft, setOpenGeneratingNft] = useState(false)
     const [openMonetizePopup, setOpenMonetizePopup] = useState(false)
+    const [openAiCloningProgress, setOpenAiCloningProgress] = useState(false)
+    const [openGenerateCardConfirmation, setOpenGenerateCardConfirmation] = useState(false)
+
+
+
+
 
     return (
         <div className="text-black min-h-screen bg-white ">
-            <MonetizePopup open={openMonetizePopup} set={setOpenMonetizePopup} setOpenGenerateCardConfirmation={setOpenGenerateCardConfirmation}/>
-            <GenerateCardConfirmation open={openGenerateCardConfirmation} set={setOpenGenerateCardConfirmation} setOpenAiCloningProgress={setOpenAiCloningProgress} />
-            <AiCloningProgress open={openAiCloningProgress} />
+            <MonetizePopup open={openMonetizePopup} set={setOpenMonetizePopup} setOpenGenerateCardConfirmation={setOpenGenerateCardConfirmation} openAiCloningProgress={openAiCloningProgress} setOpenAiCloningProgress={setOpenAiCloningProgress}/>
             <GeneratingNft open={openGeneratingNft} set={setOpenGeneratingNft} />
 
 
