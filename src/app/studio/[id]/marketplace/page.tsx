@@ -15,6 +15,8 @@ export default function Marketplace() {
     const [mintVoiceCardOpen, setMintVoiceCardOpen] = useState(false);
     const [mintingInProgress, setMintingInProgress] = useState(false);
     const [response, setResponse] = useState<{ voices: any[] }>({ voices: [] });
+    const [self, setSelf] = useState<[]>([]);
+
 
     useEffect(() => {
         fetch('https://api.elevenlabs.io/v1/voices', {
@@ -23,12 +25,19 @@ export default function Marketplace() {
             .then(response => response.json())
             .then(response => setResponse(response))
             .catch(err => console.error('erro ao : ', err))
+
+        fetch('/api/self', {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(response => setSelf(response))
+            .catch(err => console.error('erro ao : ', err))
     }, [])
 
 
 
 
-
+console.log(self.length)
     return (
         <div className="flex flex-col bg-white lg:h-screen">
             <MintVoiceCard open={mintVoiceCardOpen} set={setMintVoiceCardOpen} item={mintVoiceCard} setMintinInProgress={setMintingInProgress} />
@@ -46,6 +55,14 @@ export default function Marketplace() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 p-4 gap-2">
                         {
                             response.voices.map((item, index) => <Card key={index} item={item} setMintVoiceCard={setMintVoiceCard} setMintVoiceCardOpen={setMintVoiceCardOpen} by={' '} description={' '} mint={' '} aptos={' '} />)
+                        }
+                        <div>
+
+                        </div>
+                        {self.length > 0?
+                            self.map((item, index) => <Card key={index} item={item} setMintVoiceCard={setMintVoiceCard} setMintVoiceCardOpen={setMintVoiceCardOpen} by={' '} description={' '} mint={' '} aptos={' '} />)
+                            :
+                            'a'
                         }
                     </div>
                     <button className="border rounded-lg p-2 m-4">Load More</button>

@@ -1,12 +1,12 @@
-// import clientPromise from '@/app/lib/mongo';
+import clientPromise from '@/app/lib/mongo';
 import { put } from '@vercel/blob';
 import { NextResponse } from 'next/server'
 
 
 export async function POST(req: Request) {
     const received = await req.json();
-    // const client = await clientPromise;
-    // const db = client.db('aptos')
+    const client = await clientPromise;
+    const db = client.db('voicelab')
     const response = fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
         method: 'POST', headers: {
             'Content-Type': 'application/json',
@@ -23,19 +23,20 @@ export async function POST(req: Request) {
         })
     })
 
-    // const user = await db.collection('users').find({ id: Number(received.id) }).toArray()
+    const user = await db.collection('users').find({ id: Number(received.id) }).toArray()
 
-    // let userAudios: any = [];
+    let userAudios: any = [];
     
-    // if (user[0].type_account == 'sample') {
-        // if (user[0].audios.length < 100) {
+    if (user[0].type_account == 'sample') {
+        if (user[0].audios.length < 100) {
             const arrayBuffer = await (await response).arrayBuffer();
             const blob = await put('arquivo.mp3', arrayBuffer, { access: 'public' });
-            // userAudios.push(blob);
-            // db.collection('users').updateOne({ id: Number(received.id) }, { $set: { audios: userAudios } });
+            // verificar se ele adiciona conteudo ao invés de apagar e adicionar o novo
+            userAudios.push(blob);
+            db.collection('users').updateOne({ id: Number(received.id) }, { $set: { audios: userAudios } });
             return NextResponse.json({ download: blob.downloadUrl });
-        // }
-    // }
+        }
+    }
 }
 
 

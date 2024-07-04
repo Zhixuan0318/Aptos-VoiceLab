@@ -6,11 +6,12 @@ export default function Test() {
     const [response, setResponse] = useState<{ voices: any[] }>({ voices: [] });
     
     useEffect(() => {
-        fetch('/api/test', {
-            method: 'GET'
+        fetch('/api/clone', {
+            method: 'POST',
+            body: JSON.stringify({})
         })
             .then(response => response.json())
-            .then(data => setResponse(data))
+            .then(response => console.log(response))
             .catch(err => console.error('erro ao : ', err))
     }, []);
 

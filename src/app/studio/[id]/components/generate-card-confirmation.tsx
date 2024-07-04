@@ -4,9 +4,10 @@ import { XMarkIcon } from "@heroicons/react/24/outline"
 export default function GenerateCardConfirmation(paramGeral: any) {
     
     function sendNewVoicecardNFT() {
+        console.log("send nft voice card")
         console.log("log")
         console.log("log",paramGeral.item)
-        fetch('/api/', {
+        fetch('/api/clone', {
             method: 'POST',
             body: paramGeral.item
         })

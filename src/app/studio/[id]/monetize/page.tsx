@@ -1,5 +1,6 @@
 "use client"
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import GeneratingNft from "../components/generating-nft";
 import { sampleData } from "@/app/data/sample-data";
 import CardMonetize from "../components/card-monetize";
@@ -8,6 +9,8 @@ import MonetizePopup from "../components/monetize-popup";
 
 
 export default function Monetize() {
+    const idPath = usePathname().split('/')[2]
+    const [response, setResponse] = useState<[]>([])
     const [openGeneratingNft, setOpenGeneratingNft] = useState(false)
     const [openMonetizePopup, setOpenMonetizePopup] = useState(false)
     const [openAiCloningProgress, setOpenAiCloningProgress] = useState(false)
@@ -15,11 +18,21 @@ export default function Monetize() {
 
 
 
+    useEffect(() => {
+        fetch('/api/clone/list', {
+            method: 'POST',
+            body: JSON.stringify({ id: idPath })
+        })
+            .then(response => response.json())
+            .then(response => setResponse(response))
+            .catch(err => console.error('erro ao : ', err))
+    }, [idPath])
 
+    
 
     return (
-        <div className="text-black min-h-screen bg-white ">
-            <MonetizePopup open={openMonetizePopup} set={setOpenMonetizePopup} setOpenGenerateCardConfirmation={setOpenGenerateCardConfirmation} openAiCloningProgress={openAiCloningProgress} setOpenAiCloningProgress={setOpenAiCloningProgress}/>
+        <div className="text-black h-screen bg-white ">
+            <MonetizePopup open={openMonetizePopup} set={setOpenMonetizePopup} setOpenGenerateCardConfirmation={setOpenGenerateCardConfirmation} openAiCloningProgress={openAiCloningProgress} setOpenAiCloningProgress={setOpenAiCloningProgress} />
             <GeneratingNft open={openGeneratingNft} set={setOpenGeneratingNft} />
 
 
@@ -32,7 +45,11 @@ export default function Monetize() {
                     <p className="text-xs font-thin mt-4">Explore talented voiceover artist and mint their VoiceCard NFT to generate your voiceover.</p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 p-4 gap-2 overflow-y-auto pt-40">
-                    {sampleData.map((item, index) => <CardMonetize key={index} item={item} />)}
+                    {response.length > 0 ?
+                        response.map((item, index) => <CardMonetize key={index} item={item} />)
+                        :
+                        ''
+                    }
                     <button className="flex flex-col items-center h-[330px] border rounded-lg" onClick={() => setOpenMonetizePopup(true)}>
                         <img className="w-20 h-20 mt-auto" src="/assets/images/plus-folder.png" alt="" />
                         <h2 className="mb-auto text-xs mt-2">Generate a new VoiceCard NFT</h2>
