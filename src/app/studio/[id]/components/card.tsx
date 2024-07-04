@@ -7,7 +7,6 @@ export default function CardMarketplace(paramGeral: any) {
     const audioRef = useRef(paramGeral.item.preview_url);
     const [isPlaying, setIsPlaying] = useState(false);
 
-
     const toggleAudio = () => {
         if (audioRef.current) {
             if (isPlaying) {
@@ -18,8 +17,6 @@ export default function CardMarketplace(paramGeral: any) {
             setIsPlaying(!isPlaying);
         }
     };
-
-
     return (
         <div className="flex flex-col border rounded-lg p-4 justify-between">
             <div className="flex flex-col">

@@ -7,13 +7,13 @@ export async function POST(req: Request) {
     console.log("log")
     const formData = await req.formData();
     const client = await clientPromise;
-    const db = client.db('voicelab')
+    const db = client.db('aptos')
     const id = formData.get(`id`)
     const user = await db.collection('users').find({ id: Number(id) }).toArray()
     let userAudios: any = [];
     let filesBlobs: any = [];
     let userClonings: any = [];
-    const labelStrings: any = [];
+    const labelStrings:any = [];
 
 
 
@@ -40,20 +40,20 @@ export async function POST(req: Request) {
 
 
 
-
+    
     const form = new FormData();
-
+    
     const name = String(formData.get('name'));
     const description = String(formData.get('description'));
     const labels = formData.get('labels')
     const royalty = formData.get('royalty')
-
+    
 
 
     form.append("name", name);
     form.append("files", new File(filesBlobs, "audio.mp3", { type: filesBlobs[0].type }));
     form.append("description", description);
-    form.append("labels", JSON.stringify({ labels }))
+    form.append("labels", JSON.stringify({labels}))
 
 
     const options = {
@@ -70,9 +70,9 @@ export async function POST(req: Request) {
 
 
     user[0].clones.map((clone: any) => userClonings.push(clone))
-    userClonings.push({ id: data.voice_id, name: name, description: description, mint: 0, erned: 0, royalty: royalty, labels: JSON.parse(String(labels)) });
-
+    userClonings.push({ id: data.voice_id, name: name, description: description, mint:0, erned:0, royalty:royalty, labels: JSON.parse(String(labels)) });
+    
     db.collection('users').updateOne({ id: Number(id) }, { $set: { clones: userClonings } });
-    db.collection('voices').insertOne({ id: data.voice_id, name: name, description: description, mint: 0, erned: 0, royalty: royalty, labels: JSON.parse(String(labels)) })
+    db.collection('voices').insertOne({id: data.voice_id, name: name, description: description, mint:0, erned:0, royalty:royalty, labels: JSON.parse(String(labels))})
     return NextResponse.json({})
 }

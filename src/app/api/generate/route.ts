@@ -6,7 +6,7 @@ import { NextResponse } from 'next/server'
 export async function POST(req: Request) {
     const received = await req.json();
     const client = await clientPromise;
-    const db = client.db('voicelab')
+    const db = client.db('aptos')
     const response = fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
         method: 'POST', headers: {
             'Content-Type': 'application/json',

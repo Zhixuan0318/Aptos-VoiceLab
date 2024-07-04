@@ -15,7 +15,7 @@ export default function Marketplace() {
     const [mintVoiceCardOpen, setMintVoiceCardOpen] = useState(false);
     const [mintingInProgress, setMintingInProgress] = useState(false);
     const [response, setResponse] = useState<{ voices: any[] }>({ voices: [] });
-    const [self, setSelf] = useState<[]>([]);
+    const [self, setSelf] = useState<{ voices: any[] }>({ voices: [] });
 
 
     useEffect(() => {
@@ -37,7 +37,7 @@ export default function Marketplace() {
 
 
 
-console.log(self.length)
+
     return (
         <div className="flex flex-col bg-white lg:h-screen">
             <MintVoiceCard open={mintVoiceCardOpen} set={setMintVoiceCardOpen} item={mintVoiceCard} setMintinInProgress={setMintingInProgress} />
@@ -56,13 +56,10 @@ console.log(self.length)
                         {
                             response.voices.map((item, index) => <Card key={index} item={item} setMintVoiceCard={setMintVoiceCard} setMintVoiceCardOpen={setMintVoiceCardOpen} by={' '} description={' '} mint={' '} aptos={' '} />)
                         }
-                        <div>
-
-                        </div>
                         {self.length > 0?
                             self.map((item, index) => <Card key={index} item={item} setMintVoiceCard={setMintVoiceCard} setMintVoiceCardOpen={setMintVoiceCardOpen} by={' '} description={' '} mint={' '} aptos={' '} />)
                             :
-                            'a'
+                            ''
                         }
                     </div>
                     <button className="border rounded-lg p-2 m-4">Load More</button>
