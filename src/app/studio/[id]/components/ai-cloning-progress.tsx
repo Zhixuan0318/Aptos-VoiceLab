@@ -7,9 +7,12 @@ export default function AiCloningProgress(paramGeral: any) {
         <div className={`${paramGeral.open ? 'opacity-100' : 'opacity-0 pointer-events-none'} w-viewport inset-0 h-screen fixed flex flex-col transition duration-300 z-10`}>
             <div className="fixed w-screen h-screen blur opacity-50 bg-neutral-300"></div>
             <div className="flex flex-col my-auto p-6 mx-auto items-center rounded-lg bg-white z-10 w-[600px]">
-                <div className="flex flex-col items-center p-12 gap-8">
-                    <h1 className="text-4xl text-center">Are you confirm to generate your VoiceCard?</h1>
-                    <img className="h-64 w-64" src="/assets/images/user-speak.png" alt="" />
+                <div className="flex flex-col items-center p-12 gap-8 lg:text-nowrap">
+                    <div className="flex flex-col text-center">
+                    <h1 className="text-4xl text-center">AI Voice Cloning In Progress</h1>
+                    <p className="lg:mb-4 mt-2">Please do not close the application or refresh this page.</p>
+                    </div>
+                    <img className="h-64" src="/assets/images/user-speak.png" alt="" />
                     <div role="status" className="mt-8">
                         <svg aria-hidden="true" className="w-8 h-8 text-gray-200 animate-spin fill-black" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />

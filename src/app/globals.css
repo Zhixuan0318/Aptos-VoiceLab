@@ -2,15 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+    .text-balance {
+      text-wrap: balance;
+    }
+  }
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-}
-
-
-.shadow-around-purple{
-    box-shadow: 0px 6px 20px #bf84f056;
 }
 
 
@@ -25,8 +26,12 @@ body {
     
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.shadow-around-purple{
+    box-shadow: 0px 6px 20px #bf84f056;
 }
+
+.items-fita{
+    background-color: black;
+}
+
+

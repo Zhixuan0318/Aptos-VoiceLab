@@ -1,11 +1,29 @@
 import { NextResponse } from 'next/server'
-import clientPromise from '@/app/lib/mongo';
+import client from '@/lib/mongodb';
 
 
 export async function POST(req: Request) {
     const received = await req.json();
-    const client = await clientPromise;
-    const db = client.db('aptos')
+    await client.connect();
+    const db = client.db('voicelab')
+    const userClonings = await fetch('https://api.elevenlabs.io/v1/voices', {
+        method: 'GET',
+        headers: {
+            "xi-api-key": String(process.env.XI_API_KEY)
+        }
+    })
+        .then(response => response.json())
+        .then(response => { return response })
+        .catch(err => console.error('erro ao : ', err))
+    
+    let clones:any = []
+    userClonings.voices.map((item: any) => {
+        if (item.category === "cloned") {
+            clones.push(item)
+        }
+    })
+
+    db.collection('users').updateOne({ id: Number(received.id) }, { $set: { clones: clones } });
     const user = await db.collection('users').find({ id: Number(received.id) }).toArray()
     return NextResponse.json(user[0].clones);
 }

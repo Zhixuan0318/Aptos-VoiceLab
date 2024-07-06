@@ -1,9 +1,6 @@
 "use client"
-import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import { PlusCircleIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import GenerateCardConfirmation from "../components/generate-card-confirmation";
-import AiCloningProgress from "../components/ai-cloning-progress";
 import { usePathname } from "next/navigation";
 
 
@@ -17,7 +14,7 @@ export default function MonetizePopup(paramGeral: any) {
     const [labels, setLabels] = useState<string[]>([]);
     const [openGenerateCardConfirmation, setOpenGenerateCardConfirmation] = useState(false)
     const [fillData, setFillData] = useState(false)
-    const item = JSON.stringify({ labels: labels, files: files, name: name, description: description, royalty: royalty })
+    const [invalidLabels, setInvalidLabels] = useState(false)
 
 
 
@@ -55,7 +52,7 @@ export default function MonetizePopup(paramGeral: any) {
         formData.append(`description`, description);
         formData.append(`royalty`, royalty);
         formData.append(`labels`, JSON.stringify(labels));
-console.log(formData)
+
 
 
 
@@ -64,7 +61,12 @@ console.log(formData)
             body: formData
         })
             .then(response => response.json())
-            .then(response => console.log(response))
+            .then(response => {
+                paramGeral.setOpenAiCloningProgress(false)
+                paramGeral.refetch();
+                paramGeral.setOpenGeneratingNft(true)
+                paramGeral.setVoiceId(response.voice_id)
+            })
             .catch(err => console.error('erro ao : ', err))
     }
 
@@ -79,14 +81,17 @@ console.log(formData)
 
 
     const handleChangeProceed = () => {
-        console.log("handle")
-        if (files.length>0 && name != '' && description != '' && royalty != '' && newLabel != '' && labels) {
+        setInvalidLabels(false)
+        if (files.length>0 && name != '' && description != '' && royalty != '' && newLabel != '' && labels.length>0) {
             setOpenGenerateCardConfirmation(true)
         } else {
             setFillData(true)
             setTimeout(() => {
                 setFillData(false)
             }, 3000)
+            if(labels.length == 0){
+                setInvalidLabels(true)
+            }
         }
     }
 
@@ -96,8 +101,6 @@ console.log(formData)
             {
                 !openGenerateCardConfirmation ?
                     <div className={`${paramGeral.open ? 'opacity-100' : 'opacity-0 pointer-events-none'} inset-0 w-screen h-screen fixed flex flex-col transition duration-300 z-10`}>
-                        <GenerateCardConfirmation open={paramGeral.openGenerateCardConfirmation} set={paramGeral.setOpenGenerateCardConfirmation} setOpenAiCloningProgress={paramGeral.setOpenAiCloningProgress} item={item} />
-                        <AiCloningProgress open={paramGeral.openAiCloningProgress} />
                         <button className="fixed w-screen h-screen blur opacity-50 bg-neutral-300" onClick={() => paramGeral.set(false)}></button>
                         <div className="flex flex-col my-auto p-6 mx-auto items-center rounded-lg bg-white z-10 w-[950px]">
                             <div className={`${fillData?'opacity-100':'opacity-0'} transition-opacity duration-300 fixed flex w-full pointer-events-none`}>
@@ -119,8 +122,8 @@ console.log(formData)
                                             {labels.map((item, index) => <p className="bg-stone-200 p px-4 rounded-full" key={index}>{item}</p>)}
                                         </div>
                                         <div className="flex flex-row gap-2">
-                                            <input className="px-4 p-2 w-full border rounded" onChange={(e) => setNewLabel(e.target.value)} type="text" />
-                                            <button onClick={addLabel}><PlusCircleIcon className="w-4 h-4 text-neutral-400" /></button>
+                                            <input className={`${invalidLabels? 'border-red-700':''} px-4 p-2 w-full border rounded`} onChange={(e) => setNewLabel(e.target.value)} type="text" />
+                                            <button onClick={addLabel}><PlusCircleIcon className={`${invalidLabels? 'text-red-700':'text-black'} w-4 h-4 text-neutral-400`} /></button>
                                         </div>
                                     </div>
                                     <label htmlFor="" className="mb-2 mt-6">Royalty Fee for 10K Words</label>

@@ -2,7 +2,17 @@ import { XMarkIcon } from "@heroicons/react/24/outline"
 
 
 export default function MintVoiceCard(paramGeral: any) {
-    console.log(paramGeral)
+    function setMintToUse(){
+        fetch('/api/changemint', {
+            method: 'POST',
+            body: JSON.stringify({id:paramGeral.idPath, voice_id:paramGeral.mintVoiceCard.voice_id})
+         })
+         .then(response => response.json())
+         .then(response => console.log(response))
+         .catch(err => console.error('erro ao : ', err))    
+    }
+    
+    
     return (
         <div className={`${paramGeral.open ? 'opacity-100' : 'opacity-0 pointer-events-none'} w-viewport inset-0 h-screen fixed flex flex-col transition duration-300 z-10`}>
             <button className="fixed w-screen h-screen blur opacity-50 bg-neutral-300" onClick={() => paramGeral.set(false)}></button>
@@ -18,7 +28,7 @@ export default function MintVoiceCard(paramGeral: any) {
                             <p className="items-center">{paramGeral.item.aptos} APT / 10,000 Words</p>
                         </div>
                     </div>
-                    <button onClick={() => { paramGeral.set(false), paramGeral.setMintinInProgress(true) }} className="text-xl p-4 w-96 rounded-lg text-white bg-black">Proceed to minting</button>
+                    <button onClick={() => { paramGeral.set(false), paramGeral.setMintinInProgress(true), setMintToUse()}} className="text-xl p-4 w-96 rounded-lg text-white bg-black">Proceed to minting</button>
                 </div>
             </div>
         </div>

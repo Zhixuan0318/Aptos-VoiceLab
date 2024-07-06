@@ -1,19 +1,27 @@
-import { XMarkIcon } from "@heroicons/react/24/outline"
 import { useState } from "react";
+import Link from "next/link";
+
 
 
 export default function GeneratingNft(paramGeral: any) {
     const [carregando, setCarregando] = useState(true);
 
+    // simulate time for nft creation
+    if (paramGeral.open) {
+        setTimeout(() => {
+            setCarregando(false)
+        }, 3000)
+    }
+
 
     return (
         <div className={`${paramGeral.open ? 'opacity-100' : 'opacity-0 pointer-events-none'} w-viewport inset-0 h-screen fixed flex flex-col transition duration-300 z-10`}>
-            <button className={`${carregando?'pointer-events-none':''} fixed w-screen h-screen blur opacity-50 bg-neutral-300`} onClick={() => paramGeral.set(false)}></button>
+            <button className={`${carregando ? 'pointer-events-none' : ''} fixed w-screen h-screen blur opacity-50 bg-neutral-300`} onClick={() => paramGeral.set(false)}></button>
 
 
             <div className="flex flex-col my-auto p-6 mx-auto items-center rounded-lg bg-white z-10">
                 <div className="flex flex-col items-center p-12">
-                    <h1 className={`${carregando ? 'hidden' : 'flex'} text-4xl`}>VoiceCard NFT Collection Generated Successfully!</h1>
+                <h1 className={`${carregando ? 'hidden' : 'flex'} text-4xl text-center`}>VoiceCard NFT Collection<br/> Generated Successfully!</h1>
                     <div className={`${carregando ? 'flex' : 'hidden'} flex-col`}>
                         <h1 className="text-4xl mx-auto mb-8">Generating NFT Collection</h1>
                         <p className="max-w-[640px] text-center">Please do not close the application or refresh this page as it will affect the process. Be patient and your VoiceCard NFT collection will be ready in a few minutes.</p>
@@ -30,7 +38,7 @@ export default function GeneratingNft(paramGeral: any) {
                             <img className="w-72" src="/assets/images/check.png" alt="" />
                         }
                     </div>
-                    <button onClick={() => { paramGeral.set(false) }} className={`${carregando ? 'opacity-20 pointer-events-none' : 'opacity-100'} text-xl p-4 w-96 rounded-lg text-white bg-black`}>View it on Marketplace</button>
+                    <Link href={`/studio/${paramGeral.idPath}/marketplace/#${paramGeral.voice_id}`} onClick={() => { paramGeral.set(false) }} className={`${carregando ? 'opacity-20 pointer-events-none' : 'opacity-100'} text-center text-xl p-4 w-96 rounded-lg text-white bg-black`}>View it on Marketplace</Link>
                 </div>
             </div>
         </div>

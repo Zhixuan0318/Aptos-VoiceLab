@@ -1,19 +1,17 @@
 import { NextResponse } from 'next/server';
-import clientPromise from '@/app/lib/mongo';
+import client from '@/lib/mongodb';
 import { put } from '@vercel/blob';
 
 
 export async function POST(req: Request) {
-    console.log("log")
     const formData = await req.formData();
-    const client = await clientPromise;
-    const db = client.db('aptos')
+    await client.connect();
+    const db = client.db('voicelab')
     const id = formData.get(`id`)
     const user = await db.collection('users').find({ id: Number(id) }).toArray()
     let userAudios: any = [];
     let filesBlobs: any = [];
-    let userClonings: any = [];
-    const labelStrings:any = [];
+    const labelStrings: any = [];
 
 
 
@@ -40,39 +38,55 @@ export async function POST(req: Request) {
 
 
 
-    
+
     const form = new FormData();
-    
+
     const name = String(formData.get('name'));
     const description = String(formData.get('description'));
     const labels = formData.get('labels')
     const royalty = formData.get('royalty')
-    
 
 
     form.append("name", name);
     form.append("files", new File(filesBlobs, "audio.mp3", { type: filesBlobs[0].type }));
     form.append("description", description);
-    form.append("labels", JSON.stringify({labels}))
+    const dataLabels = { tag: labels };
+    form.append("labels", JSON.stringify(dataLabels));
 
-
+    console.log(labels)
     const options = {
         method: 'POST',
         headers: {
-            'xi-api-key': 'sk_cc0a19099b75867088a061d754f2c8072d2efac886bb7ea3',
+            'xi-api-key': String(process.env.XI_API_KEY,)
         },
         body: form
     };
-
+    console.log(String(process.env.XI_API_KEY))
 
     const response = await fetch('https://api.elevenlabs.io/v1/voices/add', options);
     const data = await response.json();
 
 
-    user[0].clones.map((clone: any) => userClonings.push(clone))
-    userClonings.push({ id: data.voice_id, name: name, description: description, mint:0, erned:0, royalty:royalty, labels: JSON.parse(String(labels)) });
+
+    const userClonings = await fetch('https://api.elevenlabs.io/v1/voices', {
+        method: 'GET',
+        headers: {
+            "xi-api-key": String(process.env.XI_API_KEY)
+        }
+    })
+        .then(response => response.json())
+        .then(response => { return response })
+        .catch(err => console.error('erro ao : ', err))
     
-    db.collection('users').updateOne({ id: Number(id) }, { $set: { clones: userClonings } });
-    db.collection('voices').insertOne({id: data.voice_id, name: name, description: description, mint:0, erned:0, royalty:royalty, labels: JSON.parse(String(labels))})
-    return NextResponse.json({})
+    let clones:any = []
+    userClonings.voices.map((item: any) => {
+        if (item.category === "cloned") {
+            clones.push(item)
+        }
+    })
+
+
+    db.collection('users').updateOne({ id: Number(id) }, { $set: { clones: clones } });
+
+    return NextResponse.json({ voice_id: data.voice_id })
 }

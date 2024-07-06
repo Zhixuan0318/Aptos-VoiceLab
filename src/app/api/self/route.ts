@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server'
-import clientPromise from '@/app/lib/mongo';
+import client from '@/lib/mongodb';
 
 
-export async function GET(){
-    const client = await clientPromise;
-    const db = client.db('aptos')
-    const voices = await db.collection('voices').find({}).toArray()
-    console.log("voices",voices)
+export async function POST(req: Request) {
+    const received = await req.json();
+    await client.connect();
+    const db = client.db('voicelab')
+    const user = await db.collection('users').find({ id: Number(received.idPath) }).toArray()
+    const voices = user[0].clones
     return NextResponse.json(voices);
 }

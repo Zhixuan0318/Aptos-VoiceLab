@@ -1,10 +1,20 @@
 import { XMarkIcon } from "@heroicons/react/24/outline"
 import { useState } from "react";
+import Link from "next/link";
 
 
 export default function MintProgress(paramGeral: any) {
     const [carregando, setCarregando] = useState(true);
 
+
+    if (paramGeral.open) {
+        setTimeout(() => {
+            setCarregando(false)
+        }, 3000)
+    }
+
+
+    
 
     return (
         <div className={`${paramGeral.open ? 'opacity-100' : 'opacity-0 pointer-events-none'} w-viewport inset-0 h-screen fixed flex flex-col transition duration-300 z-10`}>
@@ -27,10 +37,10 @@ export default function MintProgress(paramGeral: any) {
                                 </svg>
                             </div>
                             :
-                            <img src="/assets/images/check.png" alt="" />
+                            <img className="w-72" src="/assets/images/check.png" alt="" />
                         }
                     </div>
-                    <button onClick={() => { paramGeral.set(false) }} className={`${carregando ? 'opacity-20 pointer-events-none' : 'opacity-100'} text-xl p-4 w-96 rounded-lg text-white bg-black`}>Proceed to minting</button>
+                    <Link href={`/studio/${paramGeral.idPath}`} className={`${carregando ? 'opacity-20 pointer-events-none' : 'opacity-100'} text-xl p-4 w-96 text-center rounded-lg text-white bg-black`}>Use it at the Studio</Link>
                 </div>
             </div>
         </div>

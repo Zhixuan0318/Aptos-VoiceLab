@@ -10,7 +10,7 @@ export default function PopupConnectWallet(paramGeral: any) {
                 onClick={() => paramGeral.set(false)}
             >
             </button>
-            <div className="flex bg-white px-8 lg:px-16 py-8 rounded-lg w-72 lg:w-auto my-auto mx-auto z-10">
+            <div className="flex bg-white px-8 lg:px-16 py-8 rounded-lg w-72 sm:w-96 lg:w-auto my-auto mx-auto z-10">
 
                 <div className="flex flex-col mx-auto my-auto">
                     <p className="text-center lg:text-2xl font-semibold">Connect your wallet to VoiceLab.</p>

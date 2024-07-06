@@ -1,16 +1,20 @@
-import clientPromise from '@/app/lib/mongo';
+import client from '@/lib/mongodb';
 import { put } from '@vercel/blob';
 import { NextResponse } from 'next/server'
 
 
 export async function POST(req: Request) {
     const received = await req.json();
-    const client = await clientPromise;
-    const db = client.db('aptos')
-    const response = fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM', {
-        method: 'POST', headers: {
+    await client.connect();
+    const db = client.db('voicelab')
+    const user = await db.collection('users').find({ id: Number(received.id) }).toArray()
+
+
+    const response = fetch(`https://api.elevenlabs.io/v1/text-to-speech/${user[0].mint_voice_card}`, {
+        method: 'POST', 
+        headers: {
             'Content-Type': 'application/json',
-            "xi-api-key": "sk_8311f88cebb94c437691f2ea5299eb50529b93bfa8f319af"
+            "xi-api-key": String(process.env.XI_API_KEY)
         },
         body: JSON.stringify({
             text: received.textToSpeach,
@@ -23,7 +27,7 @@ export async function POST(req: Request) {
         })
     })
 
-    const user = await db.collection('users').find({ id: Number(received.id) }).toArray()
+    
 
     let userAudios: any = [];
     
@@ -34,7 +38,7 @@ export async function POST(req: Request) {
             // verificar se ele adiciona conteudo ao invés de apagar e adicionar o novo
             userAudios.push(blob);
             db.collection('users').updateOne({ id: Number(received.id) }, { $set: { audios: userAudios } });
-            return NextResponse.json({ download: blob.downloadUrl });
+            return NextResponse.json({ download: blob.downloadUrl, sample:blob.url });
         }
     }
 }
