@@ -1,40 +1,75 @@
-import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server';
 import client from '@/lib/mongodb';
 
-
+import getUser from '../getUser';
 
 export async function POST(req: Request) {
-    const received = await req.json();
-    await client.connect();
-    const db = client.db('voicelab')
+    try {
+        const received = await req.json();
+        await client.connect();
+        const db = client.db('voicelab');
 
-    db.collection('users').updateOne({ id: Number(received.id) }, { $set: { mint_voice_card: received.voice_id } });
-    const user = await db.collection('users').find({ id: Number(received.id) }).toArray()
-    let ownerCards = user[0].ownerCards
-    let voices: any = [];
-    let voice: any = []
+        const user = await getUser(received.id);
 
-    await fetch('https://api.elevenlabs.io/v1/voices', {
-        method: 'GET'
-    })
-        .then(response => response.json())
-        .then(response => {
-            voices = response.voices
-        })
-        .catch(err => console.error('erro ao : ', err))
+        let used_voices = user.used_voices;
 
-    user[0].createdCards.map((item: any) => { voices.push(item) })
+        used_voices.push({
+            tokenId: received.tokenId,
+            voice_id: received.voice_id,
+            quotes: 10000,
+            name: received.name,
+        });
 
-    voices.map((item: any) => {
-        if (item.voice_id == user[0].mint_voice_card) {
-            voice = item
-        }
-    })
+        const voice_id = received.voice_id;
 
-    if(!ownerCards.some((item:any) => item.voice_id == voice.voice_id)){
-        ownerCards.push(voice)
+        const voices = await db.collection('voices').find({}).toArray();
+
+        const voice: any = voices.find((voice) => {
+            const keys = Object.keys(voice);
+            return keys[1] == received.voice_id;
+        });
+
+        const mint = voice[voice_id].mint + 1;
+
+        console.log(
+            await db
+                .collection('voices')
+                .find({
+                    [voice_id]: {
+                        tokenId: voice[voice_id].tokenId,
+                        creator: voice[voice_id].creator,
+                        royalty: voice[voice_id].royalty,
+                        mint: voice[voice_id].mint,
+                    },
+                })
+                .toArray()
+        );
+
+        db.collection('voices').updateOne(
+            {
+                [voice_id]: {
+                    tokenId: voice[voice_id].tokenId,
+                    creator: voice[voice_id].creator,
+                    royalty: voice[voice_id].royalty,
+                    mint: voice[voice_id].mint,
+                },
+            },
+            {
+                $set: {
+                    [voice_id]: {
+                        tokenId: voice[voice_id].tokenId,
+                        creator: voice[voice_id].creator,
+                        royalty: voice[voice_id].royalty,
+                        mint: mint,
+                    },
+                },
+            }
+        );
+
+        db.collection('users').updateOne({ id: received.id }, { $set: { used_voices } });
+    } catch (error) {
+        console.log(error);
     }
-    
-    db.collection('users').updateOne({ id: Number(received.id) }, { $set: { ownerCards: ownerCards } });
+
     return NextResponse.json({});
 }

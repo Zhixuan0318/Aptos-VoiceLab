@@ -1,29 +1,40 @@
-import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server';
 import client from '@/lib/mongodb';
 
+import getUser from '../../getUser';
 
 export async function POST(req: Request) {
     const received = await req.json();
     await client.connect();
-    const db = client.db('voicelab')
+    const db = client.db('voicelab');
     const userClonings = await fetch('https://api.elevenlabs.io/v1/voices', {
         method: 'GET',
         headers: {
-            "xi-api-key": String(process.env.XI_API_KEY)
-        }
+            'xi-api-key': String(process.env.XI_API_KEY),
+        },
     })
-        .then(response => response.json())
-        .then(response => { return response })
-        .catch(err => console.error('erro ao : ', err))
-    
-    let createdCards:any = []
-    userClonings.voices.map((item: any) => {
-        if (item.category === "cloned") {
-            createdCards.push(item)
-        }
-    })
+        .then((response) => response.json())
+        .then((response) => {
+            return response;
+        })
+        .catch((err) => console.error('erro ao : ', err));
 
-    db.collection('users').updateOne({ id: Number(received.id) }, { $set: { createdCards: createdCards } });
-    const user = await db.collection('users').find({ id: Number(received.id) }).toArray()
-    return NextResponse.json(user[0].createdCards);
+    const voices = await db.collection('voices').find({}).toArray();
+    let clones: any = [];
+    userClonings.voices.map((item: any) => {
+        voices.map((voice) => {
+            if (
+                voice[item.voice_id] &&
+                received.id == voice[item.voice_id].creator &&
+                item.category === 'cloned'
+            ) {
+                clones.push(item);
+            }
+        });
+    });
+
+    await getUser(received.id);
+
+    db.collection('users').updateOne({ id: received.id }, { $set: { clones: clones } });
+    return NextResponse.json(clones);
 }

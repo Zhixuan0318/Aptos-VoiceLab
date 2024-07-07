@@ -1,0 +1,20 @@
+[package]
+name = "voice_cards"
+version = "1.0.0"
+authors = []
+
+[addresses]
+owner = 'f5c7a683bb489bccc75a65c6759845b792ba177562b516143ab1dd892422c2a2'
+voice_lab = '739d1cbacdb35abc5eddc438b6edb59315b78b1230250d42f921e5c0781537e1'
+
+[dependencies.AptosFramework]
+git = "https://github.com/aptos-labs/aptos-core.git"
+rev = "mainnet"
+subdir = "aptos-move/framework/aptos-framework"
+
+[dependencies.AptosTokenObjects]
+git = "https://github.com/aptos-labs/aptos-core.git"
+rev = "mainnet"
+subdir = "aptos-move/framework/aptos-token-objects"
+
+[dev-dependencies]
