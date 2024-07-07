@@ -8,6 +8,8 @@ import CardProps from "@/interfaces/card";
 import MintProgress from "../components/mintin-progress";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import CardMonetize from "../components/card-monetize";
+import CardMarketplace from "../components/card";
 
 
 
@@ -57,12 +59,12 @@ export default function Marketplace() {
                 <div className="flex flex-col h-full justify-between overflow-y-auto">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 p-4 gap-2">
                         {self.length > 0 ?
-                            self.map((item, index) => <Card key={index} item={item} setMintVoiceCard={setMintVoiceCard} setMintVoiceCardOpen={setMintVoiceCardOpen} by={' '} description={' '} mint={' '} aptos={' '} />)
+                            self.map((item, index) => <Card key={index} item={item} setMintVoiceCard={setMintVoiceCard} setMintVoiceCardOpen={setMintVoiceCardOpen} by={' '} description={' '} mint={' '} aptos={' '} self={true} />)
                             :
                             ''
                         }
                         {
-                            response.voices.map((item, index) => <Card key={index} item={item} setMintVoiceCard={setMintVoiceCard} setMintVoiceCardOpen={setMintVoiceCardOpen} by={' '} description={' '} mint={' '} aptos={' '} />)
+                            response.voices.map((item, index) => <Card key={index} item={item} setMintVoiceCard={setMintVoiceCard} setMintVoiceCardOpen={setMintVoiceCardOpen} by={' '} description={' '} mint={' '} aptos={' '} self={false}/>)
                         }
                     </div>
                     <button className="border rounded-lg p-2 m-4">Load More</button>

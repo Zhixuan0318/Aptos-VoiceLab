@@ -10,7 +10,7 @@ export async function POST(req: Request) {
 
     db.collection('users').updateOne({ id: Number(received.id) }, { $set: { mint_voice_card: received.voice_id } });
     const user = await db.collection('users').find({ id: Number(received.id) }).toArray()
-    let used_voices = user[0].used_voices
+    let ownerCards = user[0].ownerCards
     let voices: any = [];
     let voice: any = []
 
@@ -23,18 +23,18 @@ export async function POST(req: Request) {
         })
         .catch(err => console.error('erro ao : ', err))
 
-    user[0].clones.map((item: any) => { voices.push(item) })
+    user[0].createdCards.map((item: any) => { voices.push(item) })
 
     voices.map((item: any) => {
         if (item.voice_id == user[0].mint_voice_card) {
             voice = item
         }
     })
-    
-    if(!used_voices.some((item:any) => item.voice_id == voice.voice_id)){
-        used_voices.push(voice)
+
+    if(!ownerCards.some((item:any) => item.voice_id == voice.voice_id)){
+        ownerCards.push(voice)
     }
     
-    db.collection('users').updateOne({ id: Number(received.id) }, { $set: { used_voices: used_voices } });
+    db.collection('users').updateOne({ id: Number(received.id) }, { $set: { ownerCards: ownerCards } });
     return NextResponse.json({});
 }

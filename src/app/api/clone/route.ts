@@ -53,7 +53,7 @@ export async function POST(req: Request) {
     const dataLabels = { tag: labels };
     form.append("labels", JSON.stringify(dataLabels));
 
-    console.log(labels)
+    
     const options = {
         method: 'POST',
         headers: {
@@ -78,15 +78,23 @@ export async function POST(req: Request) {
         .then(response => { return response })
         .catch(err => console.error('erro ao : ', err))
     
-    let clones:any = []
-    userClonings.voices.map((item: any) => {
-        if (item.category === "cloned") {
-            clones.push(item)
-        }
-    })
+    let createdCards:any = []
+    console.log("response............",response)
+    console.log("data.........",data)
+    console.log("userclonings..........",userClonings)
+    
+    createdCards.push()
+    if(userClonings.createdCards){
+        userClonings.createdCards.map((item: any) => {
+            if (item.category === "cloned") {
+                createdCards.push(item)
+            }
+        })
+    }
+    
 
 
-    db.collection('users').updateOne({ id: Number(id) }, { $set: { clones: clones } });
-
+    db.collection('users').updateOne({ id: Number(id) }, { $set: { createdCards: createdCards } });
+console.log("created cards..............",createdCards)
     return NextResponse.json({ voice_id: data.voice_id })
 }

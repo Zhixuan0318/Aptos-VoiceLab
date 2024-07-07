@@ -6,6 +6,11 @@ import { useRef, useState } from "react";
 export default function CardMarketplace(paramGeral: any) {
     const audioRef = useRef(paramGeral.item.preview_url);
     const [isPlaying, setIsPlaying] = useState(false);
+    let labels: string[] = []
+    if (paramGeral.self) {
+        JSON.parse(paramGeral.item.labels.tag).map((item: string) => { if (item) { labels.push(item) } })
+    }
+
 
 
     const toggleAudio = () => {
@@ -19,7 +24,7 @@ export default function CardMarketplace(paramGeral: any) {
         }
     };
 
-console.log("param geral.........",paramGeral.item)
+
     return (
         <div className="flex flex-col border rounded-lg p-4 justify-between" id={String(paramGeral.item.voice_id)}>
             <div className="flex flex-col justify-between h-full">
@@ -27,12 +32,17 @@ console.log("param geral.........",paramGeral.item)
                     <h2 className="">{paramGeral.item.name} - {paramGeral.item.labels['use case']}</h2>
                     <p className="text-xs md:text-base mt-2">By {paramGeral.by}</p>
                     <p className="text-neutral-400 text-sm mt-4 mb-4">{paramGeral.description}</p>
-                    <div className="grid grid-cols-3 mb-8 text-xs gap-2">
+                    <div className={`${paramGeral.self? 'hidden':'grid'} grid grid-cols-3 mb-8 text-xs gap-2`}>
                         <p className={`${paramGeral.item.labels['use case'] == null ? 'hidden' : 'flex'} bg-neutral-200 p-1 w-full rounded-full items-center justify-center text-center`}>{paramGeral.item.labels['use case']}</p>
                         <p className={`${paramGeral.item.labels.accent == null ? 'hidden' : 'flex'} bg-neutral-200 p-1 w-full rounded-full items-center justify-center text-center`}>{paramGeral.item.labels.accent}</p>
                         <p className={`${paramGeral.item.labels.age == null ? 'hidden' : 'flex'} bg-neutral-200 p-1 w-full rounded-full items-center justify-center text-center`}>{paramGeral.item.labels.age}</p>
                         <p className={`${paramGeral.item.labels.gender == null ? 'hidden' : 'flex'} bg-neutral-200 p-1 w-full rounded-full items-center justify-center text-center`}>{paramGeral.item.labels.gender}</p>
                         <p className={`${paramGeral.item.labels.description == null ? 'hidden' : 'flex'} bg-neutral-200 p-1 w-full rounded-full items-center justify-center text-center`}>{paramGeral.item.labels.description}</p>
+                    </div>
+                    <div className={`${paramGeral.self? 'grid':'hidden'}  grid-cols-3 mb-8 text-xs gap-2`}>
+                        {labels.map((item: string, index: number) =>
+                            <p key={index} className="bg-neutral-200 text-xs p-1 w-full rounded-full text-center">{item}</p>
+                        )}
                     </div>
                 </div>
 

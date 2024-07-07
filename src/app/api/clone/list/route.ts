@@ -16,14 +16,14 @@ export async function POST(req: Request) {
         .then(response => { return response })
         .catch(err => console.error('erro ao : ', err))
     
-    let clones:any = []
+    let createdCards:any = []
     userClonings.voices.map((item: any) => {
         if (item.category === "cloned") {
-            clones.push(item)
+            createdCards.push(item)
         }
     })
 
-    db.collection('users').updateOne({ id: Number(received.id) }, { $set: { clones: clones } });
+    db.collection('users').updateOne({ id: Number(received.id) }, { $set: { createdCards: createdCards } });
     const user = await db.collection('users').find({ id: Number(received.id) }).toArray()
-    return NextResponse.json(user[0].clones);
+    return NextResponse.json(user[0].createdCards);
 }
