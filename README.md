@@ -14,3 +14,11 @@ VoiceLab, the first AI voice-over platform on Aptos, introduced a groundbreaking
 
 ### What VoiceLab tackles?
 ### VoiceLab - The Perfect Solution
+
+## Features Highlight
+
+### 1️⃣ Monetize Voice with VoiceCard NFT - powered by AI Voice Cloning
+### 2️⃣ Track Voice Royalties with Monetization Panel
+### 3️⃣ VoiceCard NFTs Marketplace
+### 4️⃣ VoiceLab Studio - Generate AI Speech with VoiceCard
+### 5️⃣ Voice Usage Quota Control - Burning Mechanism
