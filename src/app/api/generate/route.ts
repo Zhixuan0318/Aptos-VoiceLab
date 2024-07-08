@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     const blob = await put('arquivo.mp3', arrayBuffer, { access: 'public' });
 
     let newQuota = 0;
-    console.log(user);
+
     for (let i = 0; i < user.used_voices.length; i++) {
         if (user.used_voices[i].voice_id == received.voice_id) {
             user.used_voices[i].quotes -= received.words;
@@ -44,11 +44,12 @@ export async function POST(req: Request) {
 
     const updatedUsedVoices = (user.used_voices as any[]).filter((voice: any) => voice.quotes > 0);
 
-    console.log(user);
     userAudios.push(blob);
-    db.collection('users').updateOne(
-        { id: received.id },
-        { $set: { audios: userAudios, used_voices: updatedUsedVoices } }
-    );
+    await db
+        .collection('users')
+        .updateOne(
+            { id: received.id },
+            { $set: { audios: userAudios, used_voices: updatedUsedVoices } }
+        );
     return NextResponse.json({ download: blob.downloadUrl, sample: blob.url, newQuota });
 }

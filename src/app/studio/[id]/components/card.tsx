@@ -7,7 +7,9 @@ export default function CardMarketplace(paramGeral: any) {
     const [isPlaying, setIsPlaying] = useState(false);
     let labels: string[] = [];
 
-    if (paramGeral.item.labels.tag) {
+    if (paramGeral.item.category == 'premade') {
+        labels = Object.values(paramGeral.item.labels);
+    } else if (paramGeral.item.labels.tag) {
         const replaced = paramGeral.item.labels.tag.replace(/'/g, '"');
         const items = JSON.parse(replaced);
         items.map((item: string) => {
@@ -37,10 +39,10 @@ export default function CardMarketplace(paramGeral: any) {
                 <div className='flex flex-col'>
                     <h2 className=''>{paramGeral.item.name}</h2>
                     <p className='text-xs md:text-base mt-2'>
-                        By {paramGeral.by.slice(0, 5) + '...' + paramGeral.by.slice(59, 64)}
+                        By {paramGeral.by.slice(0, 5) + '...' + paramGeral.by.slice(62, 66)}
                     </p>
                     <p className='text-neutral-400 text-sm mt-4 mb-4'>{paramGeral.description}</p>
-                    <div
+                    {/* <div
                         className={`${
                             paramGeral.self ? 'hidden' : 'grid'
                         } grid grid-cols-3 mb-8 text-xs gap-2`}
@@ -80,7 +82,7 @@ export default function CardMarketplace(paramGeral: any) {
                         >
                             {paramGeral.item.labels.description}
                         </p>
-                    </div>
+                    </div> */}
                     <div
                         className={`${
                             paramGeral.self ? 'grid' : 'hidden'

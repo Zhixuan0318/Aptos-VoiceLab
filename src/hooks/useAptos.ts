@@ -1,4 +1,4 @@
-import { Ed25519PrivateKey } from '@aptos-labs/ts-sdk';
+import { Ed25519PrivateKey, AptosConfig, Aptos, Network } from '@aptos-labs/ts-sdk';
 import { InputTransactionData, useWallet } from '@aptos-labs/wallet-adapter-react';
 
 import { createHash } from 'crypto';
@@ -25,6 +25,36 @@ const useAptos = () => {
         return result;
     };
 
+    const generatePremadeCards = async () => {
+        const response = await fetch('/api/self', { method: 'POST' });
+
+        const allVoices = await response.json();
+
+        for (let voice of allVoices) {
+            if (voice.category == 'premade') {
+                const tokenId = await generateNewCard(
+                    voice.name,
+                    'Premade voice for Voicelabs',
+                    '0.5',
+                    Object.values(voice.labels)
+                );
+
+                await fetch('/api/premade', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        voice_id: voice.voice_id,
+
+                        tokenId,
+                        creator: account?.address,
+                        royalty: '0.5',
+                    }),
+                });
+            }
+        }
+    };
+
+    //generatePremadeCards();
+
     const generateNewCard = async (
         name: string,
         description: string,
@@ -33,13 +63,15 @@ const useAptos = () => {
     ): Promise<string> => {
         const [signature, hashedMessage] = signSignature(name + description + Date.now());
 
+        const price = parseInt((Number(royalty.replace(',', '.')) * 10 ** 8).toString());
+
         const response = await fetch('/api/pinata', {
             method: 'POST',
             body: JSON.stringify({
                 name,
                 description,
                 creator: account?.address,
-                price: Number(royalty.replace(',', '.')) * 10 ** 8,
+                price,
                 labels: labels.join(', '),
             }),
         });
@@ -53,7 +85,7 @@ const useAptos = () => {
                     name,
                     description,
                     json.uri,
-                    Number(royalty.replace(',', '.')) * 10 ** 8,
+                    price,
                     labels,
                     toVectorU8(signature.slice(2)),
                     toVectorU8(hashedMessage),
@@ -61,10 +93,14 @@ const useAptos = () => {
             },
         };
 
+        const aptosConfig = new AptosConfig({ network: Network.DEVNET });
+        const aptos = new Aptos(aptosConfig);
+
         try {
             const data = await signAndSubmitTransaction(tx);
+            const receipt = (await aptos.waitForTransaction({ transactionHash: data.hash })) as any;
 
-            for (let event of data.output.events) {
+            for (let event of receipt.events) {
                 if (event.type.includes(contractAddress)) {
                     return event.data.card_address;
                 }
@@ -102,7 +138,7 @@ const useAptos = () => {
         await signAndSubmitTransaction(tx);
     };
 
-    return { generateNewCard, mintCard, burnCard };
+    return { generateNewCard, mintCard, burnCard, generatePremadeCards };
 };
 
 export default useAptos;

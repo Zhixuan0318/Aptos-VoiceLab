@@ -43,6 +43,8 @@ export default function MonetizePopup(paramGeral: any) {
         try {
             const newCardId = await generateNewCard(name, description, royalty, labels);
 
+            console.log(newCardId);
+
             const formData = new FormData();
             files.map((file, index) => {
                 formData.append(`audio${index}`, file[0]);
@@ -55,7 +57,7 @@ export default function MonetizePopup(paramGeral: any) {
             formData.append(`royalty`, royalty);
             formData.append(`newCardId`, newCardId);
 
-            const response = await fetch('/api/clone', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/clone`, {
                 method: 'POST',
                 body: formData,
             });

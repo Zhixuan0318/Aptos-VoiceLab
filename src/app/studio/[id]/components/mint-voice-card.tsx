@@ -10,7 +10,7 @@ export default function MintVoiceCard(paramGeral: any) {
         try {
             await mintCard(tokenId);
 
-            const response = await fetch('/api/changemint', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/changemint`, {
                 method: 'POST',
                 body: JSON.stringify({
                     id: paramGeral.idPath,

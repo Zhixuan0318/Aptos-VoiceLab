@@ -13,7 +13,5 @@ export async function POST(req: Request) {
 
     const json = await response.json();
 
-    const data = json.voices.filter((item: any) => item.category == 'cloned');
-
-    return NextResponse.json(data);
+    return NextResponse.json(json.voices);
 }

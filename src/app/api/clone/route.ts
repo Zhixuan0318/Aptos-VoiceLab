@@ -90,7 +90,8 @@ export async function POST(req: Request) {
         { $set: { clones: clones, used_voices: user.used_voices } }
     );
     db.collection('voices').insertOne({
-        [voice_id]: {
+        voice_id,
+        voice: {
             tokenId: newCardId,
             creator: id,
             royalty,

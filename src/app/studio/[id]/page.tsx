@@ -37,7 +37,7 @@ export default function Dashboard() {
             }
         }
 
-        fetch('/api/usevoicelist', {
+        fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/usevoicelist`, {
             method: 'POST',
             body: JSON.stringify({ idPath: idPath }),
         })
@@ -57,7 +57,7 @@ export default function Dashboard() {
     function generateSpeach() {
         setSpin(true);
 
-        fetch('/api/generate', {
+        fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/generate`, {
             method: 'POST',
             body: JSON.stringify({
                 textToSpeach: textToSpeach,
@@ -151,8 +151,10 @@ export default function Dashboard() {
                                 </div>
                                 <button
                                     onClick={generateSpeach}
-                                    className={` transition-opacity duration-200 text-white rounded-full px-4 p-2 bg-black text-xs md:text-base w-64 lg:w-72 mb-4 xl:mb-0 sm:w-96 xl:w-auto max-w-96 mx-auto xl:mx-0`}
-                                    disabled={!useVoice || words.length > useVoice.quotes}
+                                    className={`${
+                                        words.length <= 100 ? 'opacity-100' : ' opacity-20'
+                                    } transition-opacity duration-200 text-white rounded-full px-4 p-2 bg-black text-xs md:text-base w-64 lg:w-72 mb-4 xl:mb-0 sm:w-96 xl:w-auto max-w-96 mx-auto xl:mx-0`}
+                                    disabled={!useVoice || words.length > 100}
                                 >
                                     Generate Speech
                                 </button>

@@ -2,14 +2,27 @@ import { NextResponse } from 'next/server';
 import client from '@/lib/mongodb';
 
 export async function POST(req: Request) {
-    const received = await req.json();
-    const voice_id = received.voice_id;
+    try {
+        const received = await req.json();
 
-    await client.connect();
-    const db = client.db('voicelab');
-    const voices = await db.collection('voices').find({}).toArray();
+        await client.connect();
+        const db = client.db('voicelab');
+        const voices = await db
+            .collection('voices')
+            .find({ voice_id: received.voice_id })
+            .toArray();
 
-    for (let voice of voices) {
-        if (voice[voice_id]) return NextResponse.json({ voice: voice[voice_id] });
+        await db.collection('voices').deleteMany({ voice_id: null });
+
+        return NextResponse.json({ voice: voices[0].voice });
+    } catch (error) {
+        return NextResponse.json({
+            voice: {
+                tokenId: '0x0000000000000000000000000000000000000000000000000000000000000001',
+                creator: '0x0000000000000000000000000000000000000000000000000000000000000001',
+                royalty: '0',
+                mint: 0,
+            },
+        });
     }
 }

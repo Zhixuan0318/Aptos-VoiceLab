@@ -1,4 +1,5 @@
 'use client';
+import useAptos from '@/hooks/useAptos';
 import { useWallet } from '@aptos-labs/wallet-adapter-react';
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
@@ -12,6 +13,8 @@ export default function LayoutId({ children }: { children: React.ReactNode }) {
 
     const { account, disconnect } = useWallet();
 
+    const { generatePremadeCards } = useAptos();
+
     useEffect(() => {
         if (!account) router.push('/');
     }, [account]);
@@ -19,7 +22,7 @@ export default function LayoutId({ children }: { children: React.ReactNode }) {
     const shortenedAddress = useMemo(
         () =>
             account
-                ? account.address.slice(0, 5) + '...' + account.address.slice(59, 64)
+                ? account.address.slice(0, 5) + '...' + account.address.slice(62, 66)
                 : 'Loading...',
         [account]
     );
@@ -93,7 +96,10 @@ export default function LayoutId({ children }: { children: React.ReactNode }) {
                     <Link
                         href='/'
                         className='text-center w-full p-2 rounded-lg bg-black text-white'
-                        onClick={() => disconnect()}
+                        onClick={async () => {
+                            //await generatePremadeCards();
+                            disconnect();
+                        }}
                     >
                         Disconnect Wallet
                     </Link>

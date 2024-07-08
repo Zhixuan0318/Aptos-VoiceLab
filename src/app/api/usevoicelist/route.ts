@@ -9,8 +9,10 @@ export async function POST(req: Request) {
 
     const user: any = await getUser(received.idPath);
 
+    const sorted = user.used_voices.filter((item: any) => item.voice_id);
+
     return NextResponse.json({
-        useVoice: user.used_voices ? user.used_voices[0] : undefined,
-        usedVoices: user.used_voices,
+        useVoice: sorted ? sorted[0] : undefined,
+        usedVoices: sorted,
     });
 }

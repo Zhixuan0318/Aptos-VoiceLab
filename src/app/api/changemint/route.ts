@@ -22,54 +22,29 @@ export async function POST(req: Request) {
 
         const voice_id = received.voice_id;
 
-        const voices = await db.collection('voices').find({}).toArray();
+        const voices = await db.collection('voices').find({ voice_id }).toArray();
 
-        const voice: any = voices.find((voice) => {
-            const keys = Object.keys(voice);
-            return keys[1] == received.voice_id;
-        });
+        const voice = voices[0].voice;
 
-        const mint = voice[voice_id].mint + 1;
-
-        console.log(
-            await db
-                .collection('voices')
-                .find({
-                    [voice_id]: {
-                        tokenId: voice[voice_id].tokenId,
-                        creator: voice[voice_id].creator,
-                        royalty: voice[voice_id].royalty,
-                        mint: voice[voice_id].mint,
-                    },
-                })
-                .toArray()
-        );
-
-        db.collection('voices').updateOne(
+        await db.collection('voices').updateOne(
             {
-                [voice_id]: {
-                    tokenId: voice[voice_id].tokenId,
-                    creator: voice[voice_id].creator,
-                    royalty: voice[voice_id].royalty,
-                    mint: voice[voice_id].mint,
-                },
+                voice_id,
             },
             {
                 $set: {
-                    [voice_id]: {
-                        tokenId: voice[voice_id].tokenId,
-                        creator: voice[voice_id].creator,
-                        royalty: voice[voice_id].royalty,
-                        mint: mint,
+                    voice_id,
+                    voice: {
+                        tokenId: voice.tokenId,
+                        creator: voice.creator,
+                        royalty: voice.royalty,
+                        mint: voice.mint + 1,
                     },
                 },
             }
         );
 
-        db.collection('users').updateOne({ id: received.id }, { $set: { used_voices } });
-    } catch (error) {
-        console.log(error);
-    }
+        await db.collection('users').updateOne({ id: received.id }, { $set: { used_voices } });
+    } catch (error) {}
 
     return NextResponse.json({});
 }
