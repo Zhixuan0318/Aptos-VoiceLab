@@ -6,11 +6,16 @@ export default function CardMonetize(paramGeral: any) {
     const idPath = usePathname().split('/')[2];
     let labels: string[] = [];
 
-    JSON.parse(paramGeral.item.labels.tag).map((item: string) => {
-        if (item) {
-            labels.push(item);
-        }
-    });
+    if (paramGeral.item.category == 'premade') labels = Object.values(paramGeral.item.labels);
+    else {
+        const replaced = paramGeral.item.labels.tag.replace(/'/g, '"');
+        const items = JSON.parse(replaced);
+        items.map((item: string) => {
+            if (item) {
+                labels.push(item);
+            }
+        });
+    }
 
     return (
         <div className='flex flex-col border rounded-lg p-4 justify-between'>

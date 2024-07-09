@@ -24,17 +24,11 @@ export async function POST(req: Request) {
         let clones: any = [];
         userClonings.voices.map((item: any) => {
             voices.map((voice) => {
-                if (
-                    voice[item.voice_id] &&
-                    received.id == voice[item.voice_id].creator &&
-                    item.category === 'cloned'
-                ) {
+                if (voice.voice_id == item.voice_id && received.id == voice.voice.creator) {
                     clones.push(item);
                 }
             });
         });
-
-        await getUser(received.id);
 
         await db.collection('users').updateOne({ id: received.id }, { $set: { clones: clones } });
         return NextResponse.json(clones);

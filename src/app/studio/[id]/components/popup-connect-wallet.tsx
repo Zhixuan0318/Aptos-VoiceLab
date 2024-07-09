@@ -54,7 +54,7 @@ export default function PopupConnectWallet(paramGeral: any) {
                     </button>
                     <div className='flex flex-row items-center mx-auto mt-2 lg:mt-8 gap-1 font-extralight'>
                         <p className=''>powered by</p>
-                        <img className='h-10' src='/assets/images/magic.png' alt='' />
+                        <img className='h-8 rounded-sm' src='/assets/images/petra.png' alt='' />
                     </div>
                 </div>
             </div>
