@@ -239,7 +239,7 @@ export default function Dashboard() {
                                             <div className='flex flex-col justify-between'>
                                                 <h2 className=''>{useVoice.name}</h2>
                                                 <Link
-                                                    href={`https://explorer.aptoslabs.com/token/${useVoice.tokenId}/0?network=devnet`}
+                                                    href={`https://explorer.aptoslabs.com/token/${useVoice.tokenId}/0?network=testnet`}
                                                     className='mb-1 text-xs underline underline-offset-2'
                                                 >
                                                     View on Aptoscan

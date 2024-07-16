@@ -13,7 +13,7 @@ export default function ItemsFita(paramGeral: any) {
             <div className='flex flex-col justify-between text-center lg:text-start'>
                 <h2 className='text-sm'>{paramGeral.item.name}</h2>
                 <Link
-                    href={`https://explorer.aptoslabs.com/token/${paramGeral.item.tokenId}/0?network=devnet`}
+                    href={`https://explorer.aptoslabs.com/token/${paramGeral.item.tokenId}/0?network=testnet`}
                     className='mb-1 text-xs underline underline-offset-2'
                 >
                     View on Aptoscan

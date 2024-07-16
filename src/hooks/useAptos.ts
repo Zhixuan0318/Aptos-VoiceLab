@@ -93,7 +93,7 @@ const useAptos = () => {
             },
         };
 
-        const aptosConfig = new AptosConfig({ network: Network.DEVNET });
+        const aptosConfig = new AptosConfig({ network: Network.TESTNET });
         const aptos = new Aptos(aptosConfig);
 
         try {

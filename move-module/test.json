@@ -1,0 +1,19 @@
+{
+    "name": "Test",
+    "description": "This is test",
+    "image": "https://rose-principal-turtle-588.mypinata.cloud/ipfs/QmfTT2zQhjJkVssL3R644EWreQXTAfR4JKVUGZkRzQqdbo",
+    "attributes": [
+        {
+            "trait_type": "creator",
+            "value": "0x0"
+        },
+        {
+            "trait_type": "price",
+            "value": "1000"
+        },
+        {
+            "trait_type": "labels",
+            "value": "Energy/Active"
+        }
+    ]
+}
