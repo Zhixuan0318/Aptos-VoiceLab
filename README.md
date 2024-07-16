@@ -1,12 +1,12 @@
 <div align="center">
-    <img src="" width=100>
+    <img src="https://github.com/user-attachments/assets/6eb90d40-7d7f-47b9-953f-1278e7702d9b" width=100>
     <h1>VoiceLab</h1>
     <strong>VoiceCard NFTs Driven AI-Powered Voiceover Platform On Aptos</strong>  
 </div>
 
 <br>
 
-![banner]()
+![banner](https://github.com/user-attachments/assets/230c5e81-7d6c-4630-a753-697fc378bb12)
 
 ## 	👋 Introducing VoiceLab
 
@@ -38,20 +38,35 @@ The combination of AI and Web 3.0 technology, such as the Aptos blockchain, is a
 
 ### 1️⃣ Monetize Voice with VoiceCard NFT - Powered by AI Voice Cloning
 
+
+![Create VoiceCard](https://github.com/user-attachments/assets/9b0b89b5-81b7-4aee-8d9c-5246e4434378)
+
+
 Voiceover artists can clone their voices using VoiceLab's powerful voice cloning AI model and create a unique VoiceCard NFT collection. These VoiceCard NFTs represent the artist's voice and include all relevant general information, commercial rights details, and the cloned voice data embedded as metadata. This allows artists to monetize their voice with an innovative and secure digital asset.
 
 ### 2️⃣ Track Voice Royalties with Monetization Panel
+
+![Monetize](https://github.com/user-attachments/assets/845b3a52-6657-4546-be90-fb6e03047aa9)
 
 After cloning their voice and creating a VoiceCard NFT collection, voiceover artists can easily manage their earnings through the monetize section on VoiceLab. This panel provides a clear view of the owned VoiceCard NFTs, tracking voice royalties distribution, and displaying the number of minted VoiceCard NFTs, indicating the level of support and engagement from clients.
 
 ### 3️⃣ VoiceCard NFTs Marketplace
 
+![Marketplace](https://github.com/user-attachments/assets/b346b17f-5e7c-4e12-9b69-ae76230d4556)
+
+
 Voiceover artists with VoiceCard NFT collections have their voices listed on the VoiceLab marketplace. The marketplace features clear descriptions, user statistics, and sample voices, allowing potential customers to explore a variety of voice options. Clients can mint these VoiceCard NFTs into their wallets and use them for their voiceover projects, providing a seamless and efficient process for both artists and clients.
 
 ### 4️⃣ VoiceLab Studio - Generate AI Speech with VoiceCard
 
+![Generate Speech](https://github.com/user-attachments/assets/3fe9d957-a46c-45ab-b966-5cdac9d1c353)
+
+
 VoiceCard NFTs minted on the VoiceLab Marketplace can be directly utilized in the VoiceLab Studio. Clients can see their available VoiceCard NFTs listed in the Studio and switch between them during AI speech generation. By simply pasting their voiceover scripts, selecting a suitable VoiceCard NFT, and hitting "Generate," clients can create AI-generated speech in seconds. The VoiceLab Studio is powered by the advanced SuperPolyglot AI Voice Engine, supporting 28 languages and offering various configurations to meet specific needs.
 
 ### 5️⃣ Voice Usage Quota Control - Burning Mechanism
+
+![Burning](https://github.com/user-attachments/assets/4ef039c5-3b5d-4095-a48d-9a480026176a)
+
 
 Each VoiceCard NFT has a usage quota set by the voiceover artist during the creation of the VoiceCard NFT collection. This quota specifies the number of words clients can generate by paying the set royalty fee. Once the usage quota is exhausted, VoiceLab's smart contract initiates a burning process, removing the quota-finished VoiceCard NFT. Clients will need to mint a new VoiceCard NFT to continue using it for speech generation, ensuring a fair and controlled usage of the voice assets.
